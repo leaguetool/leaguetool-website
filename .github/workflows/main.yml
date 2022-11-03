@@ -1,0 +1,31 @@
+name: leaguetool-website Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+    
+jobs:
+  # build 任务的名称 可以叫build2  test3
+  build:
+    # 在ubuntu-latest上运行
+    runs-on: ubuntu-latest
+    # 运行的步骤
+    steps:
+    # 拉取代码
+    - uses: actions/checkout@v3
+    - name: Run a one-line script
+      run: pwd
+    # ssh远程连接服务器
+    - name: copy file via ssh key
+      uses: appleboy/scp-action@master
+      with:
+        source: '../workspace/*'
+        target: ${{ secrets.TARGET}}
+        host: ${{ secrets.SSH_HOST}}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: ${{ secrets.SSH_PORT }}
+        # 执行命令
+        #script: |
+        # cd /home/nginxWebUI/html/workspace
+        # rm -rf .git && rm -rf .github
